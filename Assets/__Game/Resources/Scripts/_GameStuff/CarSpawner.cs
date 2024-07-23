@@ -16,8 +16,7 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
     [Space]
     [SerializeField] private CarSpawnItem[] _carSpawnItems;
     [Header("Car Settings")]
-    [SerializeField] private float _movementSpeedMin = 5f;
-    [SerializeField] private float _movementSpeedMax = 5.25f;
+    [SerializeField] private float _movementSpeed = 5f;
     [Header("")]
     [SerializeField] private Transform _spawnPoint;
     [SerializeField] private Transform _movementPoint;
@@ -60,9 +59,9 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
 
     private void OnCarCompleted(EventStructs.CarCompletedTheMove e) {
       var car = FindObjectsOfType<CarHandler>().FirstOrDefault(ch => ch.transform.GetInstanceID() == e.ID);
-      if (car != null && _correctValuesContainer.CorrectValues.Contains(car.CarValue)) {
+
+      if (car != null && _correctValuesContainer.CorrectValues.Contains(car.CarValue) == true)
         _activeCorrectCars[car.CarValue]--;
-      }
     }
 
     private IEnumerator DoSpawnCarsContinuously() {
@@ -70,20 +69,17 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
         CarSpawnItem carToSpawn = GetRandomCarItem();
 
         if (carToSpawn != null) {
-          if (Instantiate(carToSpawn.CarPrefab, _spawnPoint.position, _spawnPoint.rotation).TryGetComponent<CarHandler>(out var spawnedCar)) {
+          if (Instantiate(
+            carToSpawn.CarPrefab, _spawnPoint.position, _spawnPoint.rotation).TryGetComponent<CarHandler>(out var spawnedCar)) {
             spawnedCar.InitCar(carToSpawn.CarValue, carToSpawn.WordClip, _tutorial);
 
-            if (_correctValuesContainer.CorrectValues.Contains(carToSpawn.CarValue)) {
+            if (_correctValuesContainer.CorrectValues.Contains(carToSpawn.CarValue) == true)
               _activeCorrectCars[carToSpawn.CarValue]++;
-            }
 
             CarMovementHandler spawnedCarMovement = spawnedCar.GetComponent<CarMovementHandler>();
 
-            float randomMovementSpeed = Random.Range(_movementSpeedMin, _movementSpeedMax);
-
-            if (spawnedCarMovement != null) {
-              spawnedCarMovement.InitMovement(randomMovementSpeed, _spawnPoint.position, _movementPoint);
-            }
+            if (spawnedCarMovement != null)
+              spawnedCarMovement.InitMovement(_movementSpeed, _spawnPoint.position, _movementPoint);
           }
 
           yield return new WaitForSeconds(Random.Range(_spawnRateMin, _spawnRateMax));
@@ -93,15 +89,17 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
 
     private CarSpawnItem GetRandomCarItem() {
       var availableItems = _carSpawnItems
-          .Where(item => (!_clickedCarValues.Contains(item.CarValue) &&
-                          (!_remainingCorrectCars.ContainsKey(item.CarValue) || _remainingCorrectCars[item.CarValue] > _activeCorrectCars[item.CarValue])) ||
-                         !_correctValuesContainer.CorrectValues.Contains(item.CarValue))
+          .Where(item => (_clickedCarValues.Contains(item.CarValue) == false
+          && (_remainingCorrectCars.ContainsKey(item.CarValue) == false
+          || _remainingCorrectCars[item.CarValue] > _activeCorrectCars[item.CarValue]))
+          || _correctValuesContainer.CorrectValues.Contains(item.CarValue) == false)
           .ToList();
 
       if (availableItems.Count == 0)
         return null;
 
       var randomIndex = Random.Range(0, availableItems.Count);
+
       return availableItems[randomIndex];
     }
   }

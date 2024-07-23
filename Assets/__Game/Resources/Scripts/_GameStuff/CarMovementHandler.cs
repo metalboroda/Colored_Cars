@@ -14,14 +14,6 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
       transform.localScale = new Vector3(0f, 0f, 0f);
     }
 
-    private void OnEnable() {
-      _carCompletedTheMove = new EventBinding<CarCompletedTheMove>(OnMoveCompleted);
-    }
-
-    private void OnDisable() {
-      _carCompletedTheMove.Remove(OnMoveCompleted);
-    }
-
     private void OnDestroy() {
       CarMovementComponent.Dispose();
     }
@@ -31,11 +23,6 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
 
       CarMovementComponent.SpawnScale();
       CarMovementComponent.MoveToPoint();
-    }
-
-    private void OnMoveCompleted(CarCompletedTheMove carCompletedTheMove) {
-      if (carCompletedTheMove.ID == transform.GetInstanceID())
-        Destroy(gameObject);
     }
   }
 }

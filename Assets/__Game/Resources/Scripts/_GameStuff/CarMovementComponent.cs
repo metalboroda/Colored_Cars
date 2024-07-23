@@ -22,6 +22,12 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
       _transform.DOScale(1, 0.15f);
     }
 
+    public void DestroyScale() {
+      _transform.DOScale(0, 0.15f);
+
+      Object.Destroy(_transform.gameObject, 0.151f);
+    }
+
     public void MoveToPoint() {
       _transform.DOLookAt(_movementPoint.position, 0);
       _transform.DOMove(_movementPoint.position, _movementSpeed)
@@ -30,6 +36,8 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
           EventBus<EventStructs.CarCompletedTheMove>.Raise(new EventStructs.CarCompletedTheMove {
             ID = _transform.GetInstanceID()
           });
+
+          DestroyScale();
         });
     }
 
