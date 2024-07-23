@@ -1,4 +1,3 @@
-using Assets.__Game.Resources.Scripts.SOs;
 using System.Collections;
 using UnityEngine;
 
@@ -6,7 +5,6 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
 {
   public class CarSpawner : MonoBehaviour
   {
-    [SerializeField] private CorrectValuesContainerSo _correctValuesContainer;
     [Header("Settings")]
     [SerializeField] private float _spawnRateMin = 1f;
     [SerializeField] private float _spawnRateMax = 1.5f;
