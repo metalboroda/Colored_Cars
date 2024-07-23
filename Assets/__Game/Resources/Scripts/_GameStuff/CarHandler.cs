@@ -6,19 +6,20 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
 {
   public class CarHandler : MonoBehaviour, IPointerClickHandler
   {
-    private string _carValue;
+    public string CarValue { get; private set; }
+
     private AudioClip _wordClip;
 
     public void OnPointerClick(PointerEventData eventData) {
       EventBus<EventStructs.CarClickedEvent>.Raise(new EventStructs.CarClickedEvent {
         ID = transform.GetInstanceID(),
-        CarValue = _carValue,
+        CarValue = CarValue,
         WordClip = _wordClip
       });
     }
 
     public void InitCar(string carValue, AudioClip wordClip, bool tutorial = false) {
-      _carValue = carValue;
+      CarValue = carValue;
       _wordClip = wordClip;
 
       EventBus<EventStructs.CarSettedEvent>.Raise(new EventStructs.CarSettedEvent {

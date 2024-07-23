@@ -576,16 +576,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e08290cd96eec8478c7f9991a34e47c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _correctValuesContainer: {fileID: 11400000, guid: d81237bbbc6f51940ac1fb63bc5f0450, type: 2}
   _spawnRateMin: 1
   _spawnRateMax: 1.5
   _carSpawnItems:
   - CarPrefab: {fileID: 5391369863021278339, guid: 75b825a1b81f1b940ad9e78f968db984, type: 3}
     CarValue: 1
-    Amount: 2
+    Amount: 1
     WordClip: {fileID: 0}
   - CarPrefab: {fileID: 347197670056608314, guid: d6c65e39f57fa3940aa78d1bf2f61723, type: 3}
     CarValue: 0
-    Amount: 3
+    Amount: 1
     WordClip: {fileID: 0}
   _movementSpeedMin: 5
   _movementSpeedMax: 5.25

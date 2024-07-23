@@ -54,6 +54,11 @@ namespace __Game.Resources.Scripts.EventBus
       public string CarValue;
       public AudioClip WordClip;
     }
+
+    public struct CarCompletedTheMove : IEvent
+    {
+      public int ID;
+    }
     #endregion
 
     #region Game

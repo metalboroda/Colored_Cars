@@ -1,4 +1,7 @@
+using __Game.Resources.Scripts.EventBus;
+using Assets.__Game.Resources.Scripts.SOs;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -6,8 +9,10 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
 {
   public class CarSpawner : MonoBehaviour
   {
+    [SerializeField] private CorrectValuesContainerSo _correctValuesContainer;
+    [Header("Settings")]
     [SerializeField] private float _spawnRateMin = 1f;
-    [SerializeField] protected float _spawnRateMax = 1.5f;
+    [SerializeField] private float _spawnRateMax = 1.5f;
     [Space]
     [SerializeField] private CarSpawnItem[] _carSpawnItems;
     [Header("Car Settings")]
@@ -19,58 +24,84 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
     [Header("Tutorial")]
     [SerializeField] private bool _tutorial;
 
+    private HashSet<string> _clickedCarValues = new HashSet<string>();
+    private Dictionary<string, int> _remainingCorrectCars = new Dictionary<string, int>();
+    private Dictionary<string, int> _activeCorrectCars = new Dictionary<string, int>();
+
+    private EventBinding<EventStructs.CarClickedEvent> _carClickedEvent;
+    private EventBinding<EventStructs.CarCompletedTheMove> _carCompletedEvent;
+
     private void Start() {
-      StartCoroutine(DoSpawnAllCarsWithRate());
+      foreach (var carItem in _carSpawnItems) {
+        if (_correctValuesContainer.CorrectValues.Contains(carItem.CarValue)) {
+          _remainingCorrectCars[carItem.CarValue] = carItem.Amount;
+          _activeCorrectCars[carItem.CarValue] = 0;
+        }
+      }
+
+      StartCoroutine(DoSpawnCarsContinuously());
     }
 
-    private IEnumerator DoSpawnAllCarsWithRate() {
-      CarSpawnItem lastSpawnedItem = null;
-      int remainingCarsToSpawn = _carSpawnItems.Sum(item => item.Amount);
-      CarHandler spawnedCar = null;
-      CarMovementHandler spawnedCarMovement = null;
+    private void OnEnable() {
+      _carClickedEvent = new EventBinding<EventStructs.CarClickedEvent>(OnCarClicked);
+      _carCompletedEvent = new EventBinding<EventStructs.CarCompletedTheMove>(OnCarCompleted);
+    }
 
-      while (remainingCarsToSpawn > 0) {
-        CarSpawnItem carToSpawn = GetRandomCarItem(lastSpawnedItem);
+    private void OnDisable() {
+      _carClickedEvent.Remove(OnCarClicked);
+      _carCompletedEvent.Remove(OnCarCompleted);
+    }
+
+    private void OnCarClicked(EventStructs.CarClickedEvent e) {
+      if (_correctValuesContainer.CorrectValues.Contains(e.CarValue)) {
+        _clickedCarValues.Add(e.CarValue);
+      }
+    }
+
+    private void OnCarCompleted(EventStructs.CarCompletedTheMove e) {
+      var car = FindObjectsOfType<CarHandler>().FirstOrDefault(ch => ch.transform.GetInstanceID() == e.ID);
+      if (car != null && _correctValuesContainer.CorrectValues.Contains(car.CarValue)) {
+        _activeCorrectCars[car.CarValue]--;
+      }
+    }
+
+    private IEnumerator DoSpawnCarsContinuously() {
+      while (true) {
+        CarSpawnItem carToSpawn = GetRandomCarItem();
 
         if (carToSpawn != null) {
-          for (int i = 0; i < carToSpawn.Amount; i++) {
-            spawnedCar = Instantiate(
-                carToSpawn.CarPrefab, _spawnPoint.position, _spawnPoint.rotation).GetComponent<CarHandler>();
+          if (Instantiate(carToSpawn.CarPrefab, _spawnPoint.position, _spawnPoint.rotation).TryGetComponent<CarHandler>(out var spawnedCar)) {
+            spawnedCar.InitCar(carToSpawn.CarValue, carToSpawn.WordClip, _tutorial);
 
-            if (spawnedCar != null) {
-              spawnedCar.InitCar(carToSpawn.CarValue, carToSpawn.WordClip, _tutorial);
-
-              spawnedCarMovement = spawnedCar.transform.GetComponent<CarMovementHandler>();
+            if (_correctValuesContainer.CorrectValues.Contains(carToSpawn.CarValue)) {
+              _activeCorrectCars[carToSpawn.CarValue]++;
             }
+
+            CarMovementHandler spawnedCarMovement = spawnedCar.GetComponent<CarMovementHandler>();
 
             float randomMovementSpeed = Random.Range(_movementSpeedMin, _movementSpeedMax);
 
-            if (spawnedCarMovement != null)
+            if (spawnedCarMovement != null) {
               spawnedCarMovement.InitMovement(randomMovementSpeed, _spawnPoint.position, _movementPoint);
-
-            yield return new WaitForSeconds(Random.Range(_spawnRateMin, _spawnRateMax));
-
-            lastSpawnedItem = carToSpawn;
-            remainingCarsToSpawn--;
-
-            if (remainingCarsToSpawn == 0)
-              break;
+            }
           }
+
+          yield return new WaitForSeconds(Random.Range(_spawnRateMin, _spawnRateMax));
         }
       }
     }
 
-    private CarSpawnItem GetRandomCarItem(CarSpawnItem lastSpawnedItem) {
-      var availableItems = _carSpawnItems.Where(item => item != lastSpawnedItem && item.Amount > 0).ToList();
-
-      if (availableItems.Count == 0)
-        availableItems = _carSpawnItems.Where(item => item.Amount > 0).ToList();
+    private CarSpawnItem GetRandomCarItem() {
+      var availableItems = _carSpawnItems
+          .Where(item => (!_clickedCarValues.Contains(item.CarValue) &&
+                          (!_remainingCorrectCars.ContainsKey(item.CarValue) || _remainingCorrectCars[item.CarValue] > _activeCorrectCars[item.CarValue])) ||
+                         !_correctValuesContainer.CorrectValues.Contains(item.CarValue))
+          .ToList();
 
       if (availableItems.Count == 0)
         return null;
 
       var randomIndex = Random.Range(0, availableItems.Count);
-
       return availableItems[randomIndex];
     }
   }

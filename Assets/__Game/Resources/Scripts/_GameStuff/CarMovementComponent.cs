@@ -1,5 +1,5 @@
-﻿using DG.Tweening;
-using System;
+﻿using __Game.Resources.Scripts.EventBus;
+using DG.Tweening;
 using UnityEngine;
 
 namespace Assets.__Game.Resources.Scripts._GameStuff
@@ -25,7 +25,12 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
     public void MoveToPoint() {
       _transform.DOLookAt(_movementPoint.position, 0);
       _transform.DOMove(_movementPoint.position, _movementSpeed)
-        .SetSpeedBased(true);
+        .SetSpeedBased(true)
+        .OnComplete(() => {
+          EventBus<EventStructs.CarCompletedTheMove>.Raise(new EventStructs.CarCompletedTheMove {
+            ID = _transform.GetInstanceID()
+          });
+        });
     }
 
     public void Dispose() {

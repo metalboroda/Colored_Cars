@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using __Game.Resources.Scripts.EventBus;
+using UnityEngine;
+using static __Game.Resources.Scripts.EventBus.EventStructs;
 
 namespace Assets.__Game.Resources.Scripts._GameStuff
 {
@@ -6,8 +8,18 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
   {
     public CarMovementComponent CarMovementComponent;
 
+    private EventBinding<CarCompletedTheMove> _carCompletedTheMove;
+
     private void Awake() {
       transform.localScale = new Vector3(0f, 0f, 0f);
+    }
+
+    private void OnEnable() {
+      _carCompletedTheMove = new EventBinding<CarCompletedTheMove>(OnMoveCompleted);
+    }
+
+    private void OnDisable() {
+      _carCompletedTheMove.Remove(OnMoveCompleted);
     }
 
     private void OnDestroy() {
@@ -19,6 +31,11 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
 
       CarMovementComponent.SpawnScale();
       CarMovementComponent.MoveToPoint();
+    }
+
+    private void OnMoveCompleted(CarCompletedTheMove carCompletedTheMove) {
+      if (carCompletedTheMove.ID == transform.GetInstanceID())
+        Destroy(gameObject);
     }
   }
 }
