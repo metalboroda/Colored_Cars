@@ -41,7 +41,31 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
     }
 
     private CarSpawnItem GetRandomCarItem() {
-      return _carSpawnItems[Random.Range(0, _carSpawnItems.Length)];
+      float totalPosibility = 0f;
+
+      foreach (var item in _carSpawnItems) {
+        if (item.Posibility > 0) {
+          totalPosibility += item.Posibility;
+        }
+      }
+
+      if (totalPosibility == 0) {
+        return null;
+      }
+
+      float randomPoint = Random.value * totalPosibility;
+
+      foreach (var item in _carSpawnItems) {
+        if (item.Posibility > 0) {
+          if (randomPoint < item.Posibility) {
+            return item;
+          }
+          else {
+            randomPoint -= item.Posibility;
+          }
+        }
+      }
+      return null;
     }
   }
 }
