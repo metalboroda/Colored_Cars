@@ -9,7 +9,6 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
     public GameObject CarPrefab;
     [Space]
     public string CarValue;
-    public int Amount;
     [Space]
     public AudioClip WordClip;
   }
