@@ -59,6 +59,11 @@ namespace __Game.Resources.Scripts.EventBus
     {
       public int ID;
     }
+
+    public struct CarMovementSettings : IEvent {
+      public int ID;
+      public float MovementSpeed;
+    }
     #endregion
 
     #region Game

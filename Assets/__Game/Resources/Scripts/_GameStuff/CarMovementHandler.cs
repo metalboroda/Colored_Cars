@@ -23,6 +23,11 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
 
       CarMovementComponent.SpawnScale();
       CarMovementComponent.MoveToPoint();
+
+      EventBus<CarMovementSettings>.Raise(new CarMovementSettings {
+        ID = transform.GetInstanceID(),
+        MovementSpeed = movementSpeed
+      });
     }
   }
 }

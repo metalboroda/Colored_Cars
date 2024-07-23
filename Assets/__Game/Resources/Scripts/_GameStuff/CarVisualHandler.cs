@@ -1,14 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using DG.Tweening;
+using __Game.Resources.Scripts.EventBus;
+using static __Game.Resources.Scripts.EventBus.EventStructs;
 
 namespace Assets.__Game.Resources.Scripts._GameStuff
 {
   public class CarVisualHandler : MonoBehaviour
   {
-    [Header("Wheels Settings")]
-    [SerializeField] private float _rotationSpeed = 50f;
+    [SerializeField] private float _rotationSpeedMultiplier = 25f;
 
+    private float _rotationSpeed;
     private Transform _frontLeft;
     private Transform _rearLeft;
     private Transform _frontRight;
@@ -16,8 +18,18 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
 
     private List<Transform> _wheels;
 
+    private EventBinding<CarMovementSettings> _carMovementSettingsEvent;
+
     private void Awake() {
       AddWheelsToList();
+    }
+
+    private void OnEnable() {
+      _carMovementSettingsEvent = new EventBinding<CarMovementSettings>(SetRotationSpeed);
+    }
+
+    private void OnDisable() {
+      _carMovementSettingsEvent.Remove(SetRotationSpeed);
     }
 
     private void Start() {
@@ -50,6 +62,12 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
           _rearRight = child;
           _wheels.Add(_rearRight);
         }
+      }
+    }
+
+    private void SetRotationSpeed(CarMovementSettings carMovementSettings) {
+      if (carMovementSettings.ID == transform.GetInstanceID()) {
+        _rotationSpeed = carMovementSettings.MovementSpeed * _rotationSpeedMultiplier;
       }
     }
 
