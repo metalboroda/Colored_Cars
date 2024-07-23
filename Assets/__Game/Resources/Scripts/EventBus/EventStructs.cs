@@ -39,6 +39,21 @@ namespace __Game.Resources.Scripts.EventBus
     {
       public string QuestText;
     }
+
+    public struct CarSettedEvent : IEvent
+    {
+      public int ID;
+      public string CarValue;
+      public AudioClip WordClip;
+      public bool Tutorial;
+    }
+
+    public struct CarClickedEvent : IEvent
+    {
+      public int ID;
+      public string CarValue;
+      public AudioClip WordClip;
+    }
     #endregion
 
     #region Game
