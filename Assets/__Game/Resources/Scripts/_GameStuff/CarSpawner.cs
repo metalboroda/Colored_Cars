@@ -27,7 +27,8 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
         CarSpawnItem carToSpawn = GetRandomCarItem();
 
         if (carToSpawn != null) {
-          if (Instantiate(carToSpawn.CarPrefab, _spawnPoint.position, _spawnPoint.rotation).TryGetComponent<CarHandler>(out var spawnedCar)) {
+          if (Instantiate(carToSpawn.CarPrefab, _spawnPoint.position, _spawnPoint.rotation, transform)
+            .TryGetComponent<CarHandler>(out var spawnedCar)) {
             spawnedCar.InitCar(carToSpawn.CarValue, carToSpawn.WordClip, _tutorial);
 
             if (spawnedCar.TryGetComponent<CarMovementHandler>(out var spawnedCarMovement))
