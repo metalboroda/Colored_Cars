@@ -1,4 +1,6 @@
 using __Game.Resources.Scripts.EventBus;
+using Assets.__Game.Resources.Scripts.SOs;
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -6,9 +8,17 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
 {
   public class CarHandler : MonoBehaviour, IPointerClickHandler
   {
+    [SerializeField] private CorrectValuesContainerSo _correctValuesContainer;
+
     public string CarValue { get; private set; }
 
     private AudioClip _wordClip;
+
+    private CarVisualHandler _carVisualHandler;
+
+    private void Awake() {
+      _carVisualHandler = GetComponent<CarVisualHandler>();
+    }
 
     public void OnPointerClick(PointerEventData eventData) {
       EventBus<EventStructs.CarClickedEvent>.Raise(new EventStructs.CarClickedEvent {
@@ -31,6 +41,10 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
         WordClip = _wordClip,
         Tutorial = tutorial
       });
+
+      bool isCorrectValue = Array.Exists(_correctValuesContainer.CorrectValues, value => value == carValue);
+
+      _carVisualHandler.EnableTutorialGlowing(isCorrectValue);
     }
   }
 }

@@ -7,9 +7,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 170224854119021741, guid: a454cc821da5e1b419971d0230763865, type: 3}
+      propertyPath: _tutorial
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3464728071408445738, guid: a454cc821da5e1b419971d0230763865, type: 3}
       propertyPath: m_LocalPosition.z
       value: -1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3464728071408445781, guid: a454cc821da5e1b419971d0230763865, type: 3}
+      propertyPath: _tutorial
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7311929803054971101, guid: a454cc821da5e1b419971d0230763865, type: 3}
       propertyPath: _tutorial

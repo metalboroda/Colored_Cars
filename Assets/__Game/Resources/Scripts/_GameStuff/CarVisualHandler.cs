@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using __Game.Resources.Scripts.EventBus;
 using static __Game.Resources.Scripts.EventBus.EventStructs;
+using EPOOutline;
 
 namespace Assets.__Game.Resources.Scripts._GameStuff
 {
@@ -13,6 +14,11 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
     [Header("VFX")]
     [SerializeField] private GameObject _correctVfx;
     [SerializeField] private GameObject _incorrectVfx;
+    [Header("Tutorial")]
+    [ColorUsage(true, true)]
+    [SerializeField] private Color _correctColor;
+    [ColorUsage(true, true)]
+    [SerializeField] private Color _incorrectColor;
 
     private float _rotationSpeed;
     private Transform _frontLeft;
@@ -22,11 +28,17 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
 
     private List<Transform> _wheels;
 
+    private Outlinable _outlinable;
+
     private EventBinding<CarMovementSettings> _carMovementSettingsEvent;
     private EventBinding<CorrectAnswerEvent> _correctAnswerEvent;
     private EventBinding<IncorrectAnswerEvent> _incorrectAnswerEvent;
 
     private void Awake() {
+      _outlinable = GetComponent<Outlinable>();
+
+      _outlinable.enabled = false;
+
       AddWheelsToList();
     }
 
@@ -104,6 +116,17 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
     private void OnIncorrect(IncorrectAnswerEvent incorrectCancelEvent) {
       if (incorrectCancelEvent.ID == transform.GetInstanceID()) {
         Instantiate(_incorrectVfx, transform.position, Quaternion.identity);
+      }
+    }
+
+    public void EnableTutorialGlowing(bool correct) {
+      _outlinable.enabled = true;
+
+      if (correct == true) {
+        _outlinable.OutlineParameters.Color = _correctColor;
+      }
+      else {
+        _outlinable.OutlineParameters.Color = _incorrectColor;
       }
     }
   }
