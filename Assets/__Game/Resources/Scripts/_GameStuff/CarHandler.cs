@@ -44,7 +44,8 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
 
       bool isCorrectValue = Array.Exists(_correctValuesContainer.CorrectValues, value => value == carValue);
 
-      _carVisualHandler.EnableTutorialGlowing(isCorrectValue);
+      if (tutorial == true)
+        _carVisualHandler.EnableTutorialGlowing(isCorrectValue);
     }
   }
 }

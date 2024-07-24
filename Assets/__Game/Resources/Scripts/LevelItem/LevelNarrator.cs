@@ -42,7 +42,7 @@ namespace Assets.__Game.Resources.Scripts.LevelItem
     private void OnEnable() {
       _stateEvent = new EventBinding<EventStructs.StateChanged>(PlayScreenSound);
       _stuporEvent = new EventBinding<EventStructs.StuporEvent>(PlayStuporSound);
-      //_uiButtonEvent = new EventBinding<EventStructs.UiButtonEvent>(PlayQuestClipsSequentially);
+      _uiButtonEvent = new EventBinding<EventStructs.UiButtonEvent>(PlayQuestClipsSequentially);
       _variantAudioClickedEvent = new EventBinding<EventStructs.VariantAudioClickedEvent>(PlayWordAudioCLip);
       _voiceButtonAudioEvent = new EventBinding<EventStructs.VoiceButtonAudioEvent>(PlayButtonVoice);
     }
@@ -50,7 +50,7 @@ namespace Assets.__Game.Resources.Scripts.LevelItem
     private void OnDisable() {
       _stateEvent.Remove(PlayScreenSound);
       _stuporEvent.Remove(PlayStuporSound);
-      //_uiButtonEvent.Remove(PlayQuestClipsSequentially);
+      _uiButtonEvent.Remove(PlayQuestClipsSequentially);
       _variantAudioClickedEvent.Remove(PlayWordAudioCLip);
       _voiceButtonAudioEvent.Remove(PlayButtonVoice);
     }

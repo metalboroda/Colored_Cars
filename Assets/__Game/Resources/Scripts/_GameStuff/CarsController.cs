@@ -36,6 +36,8 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
         CurrentScore = _correctClicksCounter,
         MaxScore = _correctAmount
       });
+
+      EventBus<VariantsAssignedEvent>.Raise(new VariantsAssignedEvent());
     }
 
     private void CheckCorrectCar(CarClickedEvent carClickedEvent) {
@@ -43,20 +45,20 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
         if (carClickedEvent.CarValue.Contains(correctValue)) {
           _correctClicksCounter++;
 
+          EventBus<CorrectAnswerEvent>.Raise(new CorrectAnswerEvent {
+            ID = carClickedEvent.CarHandler.transform.GetInstanceID()
+          });
+
           if (_correctClicksCounter >= _correctAmount) {
             _correctClicksCounter = _correctAmount;
 
-            EventBus<ScoreEvent>.Raise(new ScoreEvent {
-              CurrentScore = _correctClicksCounter,
-              MaxScore = _correctAmount
-            });
-
-            EventBus<CorrectAnswerEvent>.Raise(new CorrectAnswerEvent {
-              ID = carClickedEvent.CarHandler.transform.GetInstanceID()
-            });
-
             _gameBootstrapper.StateMachine.ChangeStateWithDelay(new GameWinState(_gameBootstrapper), 1f, this);
           }
+
+          EventBus<ScoreEvent>.Raise(new ScoreEvent {
+            CurrentScore = _correctClicksCounter,
+            MaxScore = _correctAmount
+          });
           return;
         }
       }

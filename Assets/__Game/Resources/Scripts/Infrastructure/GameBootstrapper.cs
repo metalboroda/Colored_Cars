@@ -41,7 +41,7 @@ namespace Assets.__Game.Scripts.Infrastructure
         if (_questStateOnce == false) {
           StateMachine.Init(new GameQuestState(this));
 
-          _questStateOnce = true;
+          //_questStateOnce = true;
         } 
         else {
           StateMachine.ChangeState(new GameplayState(this));
@@ -57,7 +57,7 @@ namespace Assets.__Game.Scripts.Infrastructure
         if (_questStateOnce == false) {
           StateMachine.Init(new GameQuestState(this));
 
-          _questStateOnce = true;
+          //_questStateOnce = true;
         }
         else {
           StateMachine.ChangeState(new GameplayState(this));
