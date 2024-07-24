@@ -4,6 +4,7 @@ using DG.Tweening;
 using __Game.Resources.Scripts.EventBus;
 using static __Game.Resources.Scripts.EventBus.EventStructs;
 using EPOOutline;
+using TMPro;
 
 namespace Assets.__Game.Resources.Scripts._GameStuff
 {
@@ -11,6 +12,9 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
   {
     [Header("Wheels Settings")]
     [SerializeField] private float _rotationSpeedMultiplier = 25f;
+    [Header("Number")]
+    [SerializeField] private int _carNumber = 1;
+    private TextMeshProUGUI _numberText;
     [Header("VFX")]
     [SerializeField] private GameObject _correctVfx;
     [SerializeField] private GameObject _incorrectVfx;
@@ -36,6 +40,7 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
 
     private void Awake() {
       _outlinable = GetComponent<Outlinable>();
+      _numberText = GetComponentInChildren<TextMeshProUGUI>();
 
       _outlinable.enabled = false;
 
@@ -56,6 +61,8 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
 
     private void Start() {
       RotateWheels();
+
+      _numberText.text = _carNumber.ToString();
     }
 
     private void OnDestroy() {
