@@ -14,8 +14,11 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
       EventBus<EventStructs.CarClickedEvent>.Raise(new EventStructs.CarClickedEvent {
         ID = transform.GetInstanceID(),
         CarValue = CarValue,
-        WordClip = _wordClip
+        WordClip = _wordClip,
+        CarHandler = this
       });
+
+      Destroy(gameObject);
     }
 
     public void InitCar(string carValue, AudioClip wordClip, bool tutorial = false) {

@@ -1,3 +1,4 @@
+using Assets.__Game.Resources.Scripts._GameStuff;
 using Assets.__Game.Scripts.Enums;
 using UnityEngine;
 
@@ -33,8 +34,14 @@ namespace __Game.Resources.Scripts.EventBus
     {
       public AudioClip AudioClip;
     }
-    public struct CorrectAnswerEvent : IEvent { }
-    public struct IncorrectCancelEvent : IEvent { }
+    public struct CorrectAnswerEvent : IEvent
+    {
+      public int ID;
+    }
+    public struct IncorrectAnswerEvent : IEvent
+    {
+      public int ID;
+    }
     public struct QuestTextEvent : IEvent
     {
       public string QuestText;
@@ -53,6 +60,7 @@ namespace __Game.Resources.Scripts.EventBus
       public int ID;
       public string CarValue;
       public AudioClip WordClip;
+      public CarHandler CarHandler;
     }
 
     public struct CarCompletedTheMove : IEvent
@@ -60,7 +68,8 @@ namespace __Game.Resources.Scripts.EventBus
       public int ID;
     }
 
-    public struct CarMovementSettings : IEvent {
+    public struct CarMovementSettings : IEvent
+    {
       public int ID;
       public float MovementSpeed;
     }
@@ -78,6 +87,12 @@ namespace __Game.Resources.Scripts.EventBus
     public struct LevelPointEvent : IEvent
     {
       public int LevelPoint;
+    }
+
+    public struct ScoreEvent : IEvent
+    {
+      public int MaxScore;
+      public int CurrentScore;
     }
     #endregion
 

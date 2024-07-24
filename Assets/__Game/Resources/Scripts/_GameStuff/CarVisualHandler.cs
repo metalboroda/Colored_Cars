@@ -8,7 +8,11 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
 {
   public class CarVisualHandler : MonoBehaviour
   {
+    [Header("Wheels Settings")]
     [SerializeField] private float _rotationSpeedMultiplier = 25f;
+    [Header("VFX")]
+    [SerializeField] private GameObject _correctVfx;
+    [SerializeField] private GameObject _incorrectVfx;
 
     private float _rotationSpeed;
     private Transform _frontLeft;
@@ -19,6 +23,8 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
     private List<Transform> _wheels;
 
     private EventBinding<CarMovementSettings> _carMovementSettingsEvent;
+    private EventBinding<CorrectAnswerEvent> _correctAnswerEvent;
+    private EventBinding<IncorrectAnswerEvent> _incorrectAnswerEvent;
 
     private void Awake() {
       AddWheelsToList();
@@ -26,10 +32,14 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
 
     private void OnEnable() {
       _carMovementSettingsEvent = new EventBinding<CarMovementSettings>(SetRotationSpeed);
+      _correctAnswerEvent = new EventBinding<CorrectAnswerEvent>(OnCorrect);
+      _incorrectAnswerEvent = new EventBinding<IncorrectAnswerEvent>(OnIncorrect);
     }
 
     private void OnDisable() {
       _carMovementSettingsEvent.Remove(SetRotationSpeed);
+      _correctAnswerEvent.Remove(OnCorrect);
+      _incorrectAnswerEvent.Remove(OnIncorrect);
     }
 
     private void Start() {
@@ -82,6 +92,18 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
           _rotationSpeed, RotateMode.FastBeyond360)
             .SetLoops(-1, LoopType.Restart)
             .SetSpeedBased(true);
+      }
+    }
+
+    private void OnCorrect(CorrectAnswerEvent correctAnswerEvent) {
+      if (correctAnswerEvent.ID == transform.GetInstanceID()) {
+        Instantiate(_correctVfx, transform.position, Quaternion.identity);
+      }
+    }
+
+    private void OnIncorrect(IncorrectAnswerEvent incorrectCancelEvent) {
+      if (incorrectCancelEvent.ID == transform.GetInstanceID()) {
+        Instantiate(_incorrectVfx, transform.position, Quaternion.identity);
       }
     }
   }

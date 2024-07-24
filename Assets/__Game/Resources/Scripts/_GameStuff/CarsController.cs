@@ -1,5 +1,7 @@
 using __Game.Resources.Scripts.EventBus;
+using Assets.__Game.Resources.Scripts.Game.States;
 using Assets.__Game.Resources.Scripts.SOs;
+using Assets.__Game.Scripts.Infrastructure;
 using UnityEngine;
 using static __Game.Resources.Scripts.EventBus.EventStructs;
 
@@ -13,7 +15,13 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
 
     private int _correctClicksCounter;
 
+    private GameBootstrapper _gameBootstrapper;
+
     private EventBinding<CarClickedEvent> _carClickedEvent;
+
+    private void Awake() {
+      _gameBootstrapper = GameBootstrapper.Instance;
+    }
 
     private void OnEnable() {
       _carClickedEvent = new EventBinding<CarClickedEvent>(CheckCorrectCar);
@@ -23,17 +31,41 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
       _carClickedEvent.Remove(CheckCorrectCar);
     }
 
+    private void Start() {
+      EventBus<ScoreEvent>.Raise(new ScoreEvent {
+        CurrentScore = _correctClicksCounter,
+        MaxScore = _correctAmount
+      });
+    }
+
     private void CheckCorrectCar(CarClickedEvent carClickedEvent) {
       foreach (var correctValue in _correctValuesContainer.CorrectValues) {
         if (carClickedEvent.CarValue.Contains(correctValue)) {
           _correctClicksCounter++;
 
           if (_correctClicksCounter >= _correctAmount) {
+            _correctClicksCounter = _correctAmount;
 
+            EventBus<ScoreEvent>.Raise(new ScoreEvent {
+              CurrentScore = _correctClicksCounter,
+              MaxScore = _correctAmount
+            });
+
+            EventBus<CorrectAnswerEvent>.Raise(new CorrectAnswerEvent {
+              ID = carClickedEvent.CarHandler.transform.GetInstanceID()
+            });
+
+            _gameBootstrapper.StateMachine.ChangeStateWithDelay(new GameWinState(_gameBootstrapper), 1f, this);
           }
           return;
         }
       }
+
+      EventBus<IncorrectAnswerEvent>.Raise(new IncorrectAnswerEvent {
+        ID = carClickedEvent.CarHandler.transform.GetInstanceID()
+      });
+
+      _gameBootstrapper.StateMachine.ChangeStateWithDelay(new GameLoseState(_gameBootstrapper), 1f, this);
     }
   }
 }

@@ -1,0 +1,141 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3351164605332791017
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3351164605332791018}
+  m_Layer: 0
+  m_Name: MovementPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3351164605332791018
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3351164605332791017}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -10, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3351164605428777975}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3351164605428777974
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3351164605428777975}
+  - component: {fileID: 3351164605428777864}
+  m_Layer: 0
+  m_Name: CarSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3351164605428777975
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3351164605428777974}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3351164605583981674}
+  - {fileID: 3351164605332791018}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3351164605428777864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3351164605428777974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e08290cd96eec8478c7f9991a34e47c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawnRateMin: 2
+  _spawnRateMax: 3
+  _carSpawnItems:
+  - CarPrefab: {fileID: 697238537430668452, guid: e6fa35f5df5e65841ab692356596fd9e, type: 3}
+    Posibility: 1
+    CarValue: 1
+    WordClip: {fileID: 0}
+  - CarPrefab: {fileID: 347197670056608314, guid: d6c65e39f57fa3940aa78d1bf2f61723, type: 3}
+    Posibility: 1
+    CarValue: 0
+    WordClip: {fileID: 0}
+  - CarPrefab: {fileID: 3534423496802767640, guid: 3c30baf4ec9f68f4e9dcfaf5afaebe04, type: 3}
+    Posibility: 1
+    CarValue: 0
+    WordClip: {fileID: 0}
+  - CarPrefab: {fileID: 6972332719255465265, guid: 40b0fb78a7b423d46a680bddc31c1260, type: 3}
+    Posibility: 1
+    CarValue: 0
+    WordClip: {fileID: 0}
+  - CarPrefab: {fileID: 6758916549729256191, guid: 5bf2bb34461d46847b47ad9d6ddb6387, type: 3}
+    Posibility: 1
+    CarValue: 0
+    WordClip: {fileID: 0}
+  - CarPrefab: {fileID: 7836871087081819709, guid: af1b5ffdc9c08d147ab47f7663cdadb3, type: 3}
+    Posibility: 1
+    CarValue: 0
+    WordClip: {fileID: 0}
+  _movementSpeed: 3
+  _spawnPoint: {fileID: 3351164605583981674}
+  _movementPoint: {fileID: 3351164605332791018}
+  _tutorial: 0
+--- !u!1 &3351164605583981673
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3351164605583981674}
+  m_Layer: 0
+  m_Name: SpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3351164605583981674
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3351164605583981673}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 10, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3351164605428777975}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
