@@ -8,8 +8,6 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
   {
     public CarMovementComponent CarMovementComponent;
 
-    private EventBinding<CarCompletedTheMove> _carCompletedTheMove;
-
     private void Awake() {
       transform.localScale = new Vector3(0f, 0f, 0f);
     }

@@ -77,68 +77,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e08290cd96eec8478c7f9991a34e47c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnRateMin: 2
-  _spawnRateMax: 3
+  _spawnRateMin: 1.5
+  _spawnRateMax: 2
   _carSpawnItems:
   - CarPrefab: {fileID: 5391369863021278339, guid: 3755b44281af1004d87b454202746e63, type: 3}
-    Posibility: 0.25
     CarValue: 0
-    WordClip: {fileID: 0}
-  - CarPrefab: {fileID: 3425679307053554306, guid: d8233ba3c8fe24c4da00292b761aec60, type: 3}
-    Posibility: 0.25
-    CarValue: 0
-    WordClip: {fileID: 0}
-  - CarPrefab: {fileID: 3425679307053554306, guid: 9839bf32d7174604590ba7a963c83994, type: 3}
-    Posibility: 0.25
-    CarValue: 0
-    WordClip: {fileID: 0}
-  - CarPrefab: {fileID: 3425679307053554306, guid: 86c6fcf665f410a46bac1531c39d7c7b, type: 3}
-    Posibility: 0.25
-    CarValue: 0
-    WordClip: {fileID: 0}
-  - CarPrefab: {fileID: 3425679307053554306, guid: d2b35145884793f4a9ad83f3fcc4da59, type: 3}
-    Posibility: 0.25
-    CarValue: 0
+    Amount: 1
     WordClip: {fileID: 0}
   - CarPrefab: {fileID: 347197670056608314, guid: 51e807d9c1cf2aa47a02ed7e44f4cec3, type: 3}
-    Posibility: 0.25
     CarValue: 0
-    WordClip: {fileID: 0}
-  - CarPrefab: {fileID: 3063653811889275521, guid: 14ca912d58971274097d38ab6ebbfda6, type: 3}
-    Posibility: 0.25
-    CarValue: 0
-    WordClip: {fileID: 0}
-  - CarPrefab: {fileID: 3063653811889275521, guid: da627228e571520489c0ce5adb82bae6, type: 3}
-    Posibility: 0.25
-    CarValue: 0
-    WordClip: {fileID: 0}
-  - CarPrefab: {fileID: 3063653811889275521, guid: 452a0004e4b0ccc4a89f34b4915998b7, type: 3}
-    Posibility: 0.25
-    CarValue: 0
-    WordClip: {fileID: 0}
-  - CarPrefab: {fileID: 3063653811889275521, guid: 054538543dd6c3a41ad3dfeedb5fa78b, type: 3}
-    Posibility: 0.25
-    CarValue: 0
+    Amount: 2
     WordClip: {fileID: 0}
   - CarPrefab: {fileID: 697238537430668452, guid: 7ad72cc09852b2048a92459ddc9cccf6, type: 3}
-    Posibility: 0.25
     CarValue: 0
-    WordClip: {fileID: 0}
-  - CarPrefab: {fileID: 5342952942574774197, guid: dca87f71258760f47847f9da0bd963a1, type: 3}
-    Posibility: 0.25
-    CarValue: 0
-    WordClip: {fileID: 0}
-  - CarPrefab: {fileID: 5342952942574774197, guid: dcac9b0a322f25d4e8a41510a2b7407b, type: 3}
-    Posibility: 0.25
-    CarValue: 0
-    WordClip: {fileID: 0}
-  - CarPrefab: {fileID: 5342952942574774197, guid: 836a7d81b9b061e498ded082fd59a729, type: 3}
-    Posibility: 0.25
-    CarValue: 0
-    WordClip: {fileID: 0}
-  - CarPrefab: {fileID: 5342952942574774197, guid: 0c9c868d8cdfbd5449a59e4c4702e3c0, type: 3}
-    Posibility: 0.25
-    CarValue: 0
+    Amount: 3
     WordClip: {fileID: 0}
   _movementSpeed: 3
   _spawnPoint: {fileID: 3351164605583981674}

@@ -34,7 +34,8 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
         .SetSpeedBased(true)
         .OnComplete(() => {
           EventBus<EventStructs.CarCompletedTheMove>.Raise(new EventStructs.CarCompletedTheMove {
-            ID = _transform.GetInstanceID()
+            ID = _transform.GetInstanceID(),
+            CarHandler = _transform.GetComponent<CarHandler>()
           });
 
           DestroyScale();

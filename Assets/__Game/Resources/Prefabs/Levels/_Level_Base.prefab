@@ -2842,10 +2842,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8974865717979555193}
     m_Modifications:
-    - target: {fileID: 3351164605332791018, guid: dac5cfc46af36ae458121cc10d66830a, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -15
-      objectReference: {fileID: 0}
     - target: {fileID: 3351164605428777974, guid: dac5cfc46af36ae458121cc10d66830a, type: 3}
       propertyPath: m_Name
       value: CarSpawner
@@ -2893,10 +2889,6 @@ PrefabInstance:
     - target: {fileID: 3351164605428777975, guid: dac5cfc46af36ae458121cc10d66830a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3351164605583981674, guid: dac5cfc46af36ae458121cc10d66830a, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dac5cfc46af36ae458121cc10d66830a, type: 3}

@@ -88,7 +88,7 @@ namespace Assets.__Game.Resources.Scripts.LevelItem
 
       _questClipsArePlayed = true;
 
-      if (uiButtonEvent.UiEnums == __Game.Scripts.Enums.UiEnums.QuestPlayButton) {
+      if (_questClips.Length > 0 && uiButtonEvent.UiEnums == __Game.Scripts.Enums.UiEnums.QuestPlayButton) {
         if (_questClips.Length > 0)
           StartCoroutine(DoPlayClipsSequentially(_questClips));
       }

@@ -66,6 +66,7 @@ namespace __Game.Resources.Scripts.EventBus
     public struct CarCompletedTheMove : IEvent
     {
       public int ID;
+      public CarHandler CarHandler;
     }
 
     public struct CarMovementSettings : IEvent

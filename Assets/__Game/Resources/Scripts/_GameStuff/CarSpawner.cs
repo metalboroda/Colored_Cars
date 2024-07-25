@@ -1,5 +1,8 @@
+﻿using __Game.Resources.Scripts.EventBus;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using static __Game.Resources.Scripts.EventBus.EventStructs;
 
 namespace Assets.__Game.Resources.Scripts._GameStuff
 {
@@ -18,53 +21,52 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
     [Header("Tutorial")]
     [SerializeField] private bool _tutorial;
 
+    private List<CarHandler> _spawnedCars = new List<CarHandler>();
+
+    private EventBinding<CarCompletedTheMove> _carCompletedTheMove;
+
+    private void OnEnable() {
+      _carCompletedTheMove = new EventBinding<CarCompletedTheMove>(OnCarCompletedTheMove);
+    }
+
+    private void OnDisable() {
+      _carCompletedTheMove.Remove(OnCarCompletedTheMove);
+    }
+
     private void Start() {
-      StartCoroutine(DoSpawnCarsContinuously());
+      StartCoroutine(SpawnCars());
     }
 
-    private IEnumerator DoSpawnCarsContinuously() {
+    private void OnCarCompletedTheMove(CarCompletedTheMove carCompletedTheMove) {
+      _spawnedCars.Remove(carCompletedTheMove.CarHandler);
+    }
+
+    private IEnumerator SpawnCars() {
       while (true) {
-        CarSpawnItem carToSpawn = GetRandomCarItem();
+        foreach (var carSpawnItem in _carSpawnItems) {
+          for (int i = 0; i < carSpawnItem.Amount; i++) {
+            if (_spawnedCars.Contains(carSpawnItem.CarPrefab.GetComponent<CarHandler>())) {
+              yield return new WaitForSeconds(Random.Range(_spawnRateMin, _spawnRateMax));
+              continue;
+            }
 
-        if (carToSpawn != null) {
-          if (Instantiate(carToSpawn.CarPrefab, _spawnPoint.position, _spawnPoint.rotation, transform)
-            .TryGetComponent<CarHandler>(out var spawnedCar)) {
-            spawnedCar.InitCar(carToSpawn.CarValue, carToSpawn.WordClip, _tutorial);
+            SpawnCar(carSpawnItem);
 
-            if (spawnedCar.TryGetComponent<CarMovementHandler>(out var spawnedCarMovement))
-              spawnedCarMovement.InitMovement(_movementSpeed, _spawnPoint.position, _movementPoint);
+            yield return new WaitForSeconds(Random.Range(_spawnRateMin, _spawnRateMax));
           }
-          yield return new WaitForSeconds(Random.Range(_spawnRateMin, _spawnRateMax));
         }
       }
     }
 
-    private CarSpawnItem GetRandomCarItem() {
-      float totalPosibility = 0f;
+    private void SpawnCar(CarSpawnItem carSpawnItem) {
+      GameObject carObject = Instantiate(carSpawnItem.CarPrefab, _spawnPoint.position, Quaternion.identity);
+      CarHandler carHandler = carObject.GetComponent<CarHandler>();
+      CarMovementHandler carMovementHandler = carObject.GetComponent<CarMovementHandler>();
 
-      foreach (var item in _carSpawnItems) {
-        if (item.Posibility > 0) {
-          totalPosibility += item.Posibility;
-        }
-      }
+      carHandler.InitCar(carSpawnItem.CarValue, carSpawnItem.WordClip, _tutorial);
+      carMovementHandler.InitMovement(_movementSpeed, _spawnPoint.position, _movementPoint);
 
-      if (totalPosibility == 0) {
-        return null;
-      }
-
-      float randomPoint = Random.value * totalPosibility;
-
-      foreach (var item in _carSpawnItems) {
-        if (item.Posibility > 0) {
-          if (randomPoint < item.Posibility) {
-            return item;
-          }
-          else {
-            randomPoint -= item.Posibility;
-          }
-        }
-      }
-      return null;
+      _spawnedCars.Add(carHandler);
     }
   }
 }
