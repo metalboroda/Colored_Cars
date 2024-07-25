@@ -33,10 +33,9 @@ namespace Assets.__Game.Resources.Scripts.LevelItem
     private EventBinding<EventStructs.VoiceButtonAudioEvent> _voiceButtonAudioEvent;
 
     private void Awake() {
-      _gameBootstrapper = GameBootstrapper.Instance;
-      _audioTool = new AudioTool(_audioSource);
-
       _audioSource = GetComponent<AudioSource>();
+      _audioTool = new AudioTool(_audioSource);
+      _gameBootstrapper = GameBootstrapper.Instance;
     }
 
     private void OnEnable() {
@@ -61,57 +60,61 @@ namespace Assets.__Game.Resources.Scripts.LevelItem
     }
 
     private void PlayScreenSound(EventStructs.StateChanged state) {
+      if (_audioSource == null) return;
+
+      _audioSource.Stop();
       switch (state.State) {
         case GameWinState:
-          _audioSource.Stop();
           _audioSource.PlayOneShot(_audioTool.GetRandomCLip(_winAnnouncerClips));
           break;
         case GameLoseState:
-          _audioSource.Stop();
           _audioSource.PlayOneShot(_audioTool.GetRandomCLip(_loseAnnouncerClips));
           break;
       }
     }
 
     private void PlayButtonVoice(EventStructs.VoiceButtonAudioEvent voiceButtonAudioEvent) {
+      if (_audioSource == null || voiceButtonAudioEvent.AudioClip == null) return;
+
       _audioSource.Stop();
       _audioSource.PlayOneShot(voiceButtonAudioEvent.AudioClip);
     }
 
     private void PlayStuporSound(EventStructs.StuporEvent stuporEvent) {
+      if (_audioSource == null) return;
+
       _audioSource.Stop();
       _audioSource.PlayOneShot(_audioTool.GetRandomCLip(_stuporAnnouncerClips));
     }
 
     public void PlayQuestClipsSequentially(EventStructs.UiButtonEvent uiButtonEvent) {
-      if (_questClipsArePlayed == true) return;
+      if (_questClipsArePlayed || _questClips == null || _questClips.Length == 0) return;
 
-      _questClipsArePlayed = true;
-
-      if (_questClips.Length > 0 && uiButtonEvent.UiEnums == __Game.Scripts.Enums.UiEnums.QuestPlayButton) {
-        if (_questClips.Length > 0)
-          StartCoroutine(DoPlayClipsSequentially(_questClips));
+      if (uiButtonEvent.UiEnums == __Game.Scripts.Enums.UiEnums.QuestPlayButton) {
+        _questClipsArePlayed = true;
+        StartCoroutine(DoPlayClipsSequentially(_questClips));
       }
     }
 
     private IEnumerator DoPlayClipsSequentially(AudioClip[] clips) {
-      if (_questClips.Length == 0) yield break;
+      if (clips == null || clips.Length == 0 || _audioSource == null) yield break;
 
       yield return new WaitForSecondsRealtime(0.1f);
 
       foreach (var clip in clips) {
+        if (clip == null) continue;
+
         _audioSource.Stop();
         _audioSource.PlayOneShot(clip);
-
         yield return new WaitForSecondsRealtime(clip.length + _delayBetweenClips);
       }
     }
 
     private void PlayWordAudioCLip(EventStructs.VariantAudioClickedEvent variantAudioClickedEvent) {
-      if (variantAudioClickedEvent.AudioClip != null) {
-        _audioSource.Stop();
-        _audioSource.PlayOneShot(variantAudioClickedEvent.AudioClip);
-      }
+      if (_audioSource == null || variantAudioClickedEvent.AudioClip == null) return;
+
+      _audioSource.Stop();
+      _audioSource.PlayOneShot(variantAudioClickedEvent.AudioClip);
     }
   }
 }

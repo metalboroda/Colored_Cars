@@ -16,8 +16,7 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
     [Header("Car Settings")]
     [SerializeField] private float _movementSpeed = 5f;
     [Header("")]
-    [SerializeField] private Transform _spawnPoint;
-    [SerializeField] private Transform _movementPoint;
+    [SerializeField] private CarSpawnRoute[] _carSpawnRoutes;
     [Header("Tutorial")]
     [SerializeField] private bool _tutorial;
 
@@ -57,7 +56,9 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
               continue;
             }
 
-            SpawnCar(carSpawnItem);
+            CarSpawnRoute randomRoute = _carSpawnRoutes[Random.Range(0, _carSpawnRoutes.Length)];
+
+            SpawnCar(carSpawnItem, randomRoute);
 
             yield return new WaitForSeconds(Random.Range(_spawnRateMin, _spawnRateMax));
           }
@@ -65,14 +66,14 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
       }
     }
 
-    private void SpawnCar(CarSpawnItem carSpawnItem) {
-      GameObject carObject = Instantiate(carSpawnItem.CarPrefab, _spawnPoint.position, Quaternion.identity, transform);
+    private void SpawnCar(CarSpawnItem carSpawnItem, CarSpawnRoute carSpawnRoute) {
+      GameObject carObject = Instantiate(carSpawnItem.CarPrefab, carSpawnRoute.SpawnPoint.position, Quaternion.identity, transform);
       CarHandler carHandler = carObject.GetComponent<CarHandler>();
       CarMovementHandler carMovementHandler = carObject.GetComponent<CarMovementHandler>();
       CarVisualHandler carVisualHandler = carObject.GetComponent<CarVisualHandler>();
 
       carHandler.InitCar(carSpawnItem.CarValue, carSpawnItem.WordClip, _tutorial);
-      carMovementHandler.InitMovement(_movementSpeed, _spawnPoint.position, _movementPoint);
+      carMovementHandler.InitMovement(_movementSpeed, carSpawnRoute.SpawnPoint.position, carSpawnRoute.MovementPoint);
       carVisualHandler.SetNumber(carSpawnItem.CarNumber);
 
       _spawnedCars.Add(carObject);
