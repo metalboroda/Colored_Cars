@@ -2685,6 +2685,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _levelPrefabs:
   - {fileID: 5544416873168210663, guid: 570bd1418c9c7ca45b6035ae825afb45, type: 3}
+  - {fileID: 3537024034473634429, guid: f7ee45c597507d842983e65c7fb1d118, type: 3}
 --- !u!1 &593056670
 GameObject:
   m_ObjectHideFlags: 0

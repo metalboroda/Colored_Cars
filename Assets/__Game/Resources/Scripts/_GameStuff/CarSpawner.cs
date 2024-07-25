@@ -25,6 +25,10 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
     private EventBinding<CarCompletedTheMove> _carCompletedTheMove;
     private EventBinding<CarClickedEvent> _carClickedEvent;
 
+    private void Awake() {
+      ShuffleCarSpawnItems();
+    }
+
     private void OnEnable() {
       _carCompletedTheMove = new EventBinding<CarCompletedTheMove>(OnCarCompletedTheMove);
       _carClickedEvent = new EventBinding<CarClickedEvent>(OnCarClicked);
@@ -85,6 +89,16 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
           carSpawnItem.Amount--;
           break;
         }
+      }
+    }
+
+    private void ShuffleCarSpawnItems() {
+      for (int i = _carSpawnItems.Length - 1; i > 0; i--) {
+        int randomIndex = Random.Range(0, i + 1);
+        CarSpawnItem temp = _carSpawnItems[i];
+
+        _carSpawnItems[i] = _carSpawnItems[randomIndex];
+        _carSpawnItems[randomIndex] = temp;
       }
     }
   }
