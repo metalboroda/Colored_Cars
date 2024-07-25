@@ -112,15 +112,18 @@ MonoBehaviour:
   _spawnRateMin: 1.5
   _spawnRateMax: 2
   _carSpawnItems:
-  - CarPrefab: {fileID: 5391369863021278339, guid: 3755b44281af1004d87b454202746e63, type: 3}
+  - CarPrefab: {fileID: 3279408254691576198, guid: 3943c00aa0a15cf42847fad29fb2b6b8, type: 3}
+    CarNumber: 1
     CarValue: 0
     Amount: 1
     WordClip: {fileID: 0}
-  - CarPrefab: {fileID: 347197670056608314, guid: 51e807d9c1cf2aa47a02ed7e44f4cec3, type: 3}
+  - CarPrefab: {fileID: 4120171932802166496, guid: e4b35ee090cec41488eff3ed239a07d0, type: 3}
+    CarNumber: 2
     CarValue: 0
     Amount: 2
     WordClip: {fileID: 0}
-  - CarPrefab: {fileID: 697238537430668452, guid: 7ad72cc09852b2048a92459ddc9cccf6, type: 3}
+  - CarPrefab: {fileID: 321970793369932771, guid: b5054348a95daf847919c94121d50399, type: 3}
+    CarNumber: 3
     CarValue: 0
     Amount: 3
     WordClip: {fileID: 0}

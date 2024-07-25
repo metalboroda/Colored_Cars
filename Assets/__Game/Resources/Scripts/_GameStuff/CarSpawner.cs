@@ -69,9 +69,11 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
       GameObject carObject = Instantiate(carSpawnItem.CarPrefab, _spawnPoint.position, Quaternion.identity, transform);
       CarHandler carHandler = carObject.GetComponent<CarHandler>();
       CarMovementHandler carMovementHandler = carObject.GetComponent<CarMovementHandler>();
+      CarVisualHandler carVisualHandler = carObject.GetComponent<CarVisualHandler>();
 
       carHandler.InitCar(carSpawnItem.CarValue, carSpawnItem.WordClip, _tutorial);
       carMovementHandler.InitMovement(_movementSpeed, _spawnPoint.position, _movementPoint);
+      carVisualHandler.SetNumber(carSpawnItem.CarNumber);
 
       _spawnedCars.Add(carObject);
     }

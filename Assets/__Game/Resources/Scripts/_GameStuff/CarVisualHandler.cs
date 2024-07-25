@@ -13,7 +13,6 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
     [Header("Wheels Settings")]
     [SerializeField] private float _rotationSpeedMultiplier = 25f;
     [Header("Number")]
-    [SerializeField] private int _carNumber = 1;
     private TextMeshProUGUI _numberText;
     [Header("VFX")]
     [SerializeField] private GameObject _correctVfx;
@@ -29,7 +28,6 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
     private Transform _rearLeft;
     private Transform _frontRight;
     private Transform _rearRight;
-
     private List<Transform> _wheels;
 
     private Outlinable _outlinable;
@@ -61,8 +59,6 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
 
     private void Start() {
       RotateWheels();
-
-      _numberText.text = _carNumber.ToString();
     }
 
     private void OnDestroy() {
@@ -71,23 +67,27 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
       }
     }
 
+    public void SetNumber(int number) {
+      _numberText.text = number.ToString();
+    }
+
     private void AddWheelsToList() {
       _wheels = new List<Transform>();
 
       foreach (Transform child in transform) {
-        if (child.name.Contains("FL")) {
+        if (child.name.Contains("F.L")) {
           _frontLeft = child;
           _wheels.Add(_frontLeft);
         }
-        else if (child.name.Contains("RL")) {
+        else if (child.name.Contains("R.L")) {
           _rearLeft = child;
           _wheels.Add(_rearLeft);
         }
-        else if (child.name.Contains("FR")) {
+        else if (child.name.Contains("F.R")) {
           _frontRight = child;
           _wheels.Add(_frontRight);
         }
-        else if (child.name.Contains("RR")) {
+        else if (child.name.Contains("R.R")) {
           _rearRight = child;
           _wheels.Add(_rearRight);
         }
@@ -105,9 +105,9 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
         float initialYRotation = wheel.localEulerAngles.y;
         float initialZRotation = wheel.localEulerAngles.z;
 
-        float rotationDirection = (wheel == _frontRight || wheel == _rearRight) ? -1 : 1;
+        //float rotationDirection = (wheel == _frontRight || wheel == _rearRight) ? -1 : 1;
 
-        wheel.DOLocalRotate(new Vector3(360 * rotationDirection, initialYRotation, initialZRotation),
+        wheel.DOLocalRotate(new Vector3(360, initialYRotation, initialZRotation),
           _rotationSpeed, RotateMode.FastBeyond360)
             .SetLoops(-1, LoopType.Restart)
             .SetSpeedBased(true);

@@ -19,7 +19,7 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
     }
 
     public void SpawnScale() {
-      _transform.DOScale(1, 0.15f);
+      _transform.DOScale(0.7f, 0.15f);
     }
 
     public void DestroyScale() {
