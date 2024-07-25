@@ -14,7 +14,7 @@ namespace Assets.__Game.Scripts.Infrastructure
     public FiniteStateMachine StateMachine;
     public SceneLoader SceneLoader;
 
-    private bool _questStateOnce;
+    public bool QuestStateOnce { get; set; }
 
     public GameBootstrapper() {
       StateMachine = new FiniteStateMachine();
@@ -38,10 +38,8 @@ namespace Assets.__Game.Scripts.Infrastructure
 
     private void Start() {
       SceneLoader.LoadSceneAsyncWithDelay(Hashes.GameScene, 2f, this, () => {
-        if (_questStateOnce == false) {
+        if (QuestStateOnce == false) {
           StateMachine.Init(new GameQuestState(this));
-
-          //_questStateOnce = true;
         } 
         else {
           StateMachine.ChangeState(new GameplayState(this));
@@ -54,10 +52,8 @@ namespace Assets.__Game.Scripts.Infrastructure
 
     public void RestartLevel() {
       SceneLoader.RestartSceneAsync(() => {
-        if (_questStateOnce == false) {
+        if (QuestStateOnce == false) {
           StateMachine.Init(new GameQuestState(this));
-
-          //_questStateOnce = true;
         }
         else {
           StateMachine.ChangeState(new GameplayState(this));

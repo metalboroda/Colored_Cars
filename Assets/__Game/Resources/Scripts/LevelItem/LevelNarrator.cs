@@ -4,6 +4,7 @@ using Assets.__Game.Scripts.Infrastructure;
 using Assets.__Game.Scripts.Tools;
 using System.Collections;
 using UnityEngine;
+using static __Game.Resources.Scripts.EventBus.EventStructs;
 
 namespace Assets.__Game.Resources.Scripts.LevelItem
 {
@@ -20,6 +21,7 @@ namespace Assets.__Game.Resources.Scripts.LevelItem
     [SerializeField] private AudioClip[] _stuporAnnouncerClips;
 
     private bool _questClipsArePlayed;
+    private bool _questButtonPressed;
 
     private AudioSource _audioSource;
 
@@ -57,6 +59,9 @@ namespace Assets.__Game.Resources.Scripts.LevelItem
     private void Start() {
       if (_questStartClip != null && _gameBootstrapper.StateMachine.CurrentState is GameQuestState)
         _audioSource.PlayOneShot(_questStartClip);
+
+      if (_gameBootstrapper.QuestStateOnce == true)
+        PlayQuestClipsSequentiallyAtStart();
     }
 
     private void PlayScreenSound(EventStructs.StateChanged state) {
@@ -87,12 +92,21 @@ namespace Assets.__Game.Resources.Scripts.LevelItem
       _audioSource.PlayOneShot(_audioTool.GetRandomCLip(_stuporAnnouncerClips));
     }
 
+    public void PlayQuestClipsSequentiallyAtStart() {
+      if (_questClipsArePlayed || _questClips == null || _questClips.Length == 0) return;
+
+      _questClipsArePlayed = true;
+      StartCoroutine(DoPlayClipsSequentially(_questClips));
+    }
+
     public void PlayQuestClipsSequentially(EventStructs.UiButtonEvent uiButtonEvent) {
       if (_questClipsArePlayed || _questClips == null || _questClips.Length == 0) return;
 
       if (uiButtonEvent.UiEnums == __Game.Scripts.Enums.UiEnums.QuestPlayButton) {
         _questClipsArePlayed = true;
         StartCoroutine(DoPlayClipsSequentially(_questClips));
+
+        _gameBootstrapper.QuestStateOnce = true;
       }
     }
 

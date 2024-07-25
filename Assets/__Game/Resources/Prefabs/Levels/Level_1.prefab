@@ -145,7 +145,7 @@ PrefabInstance:
       objectReference: {fileID: 4120171932802166496, guid: e4b35ee090cec41488eff3ed239a07d0, type: 3}
     - target: {fileID: 7942468345822059732, guid: a454cc821da5e1b419971d0230763865, type: 3}
       propertyPath: _maxTime
-      value: 35
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 8974865717979555190, guid: a454cc821da5e1b419971d0230763865, type: 3}
       propertyPath: m_Name
@@ -195,5 +195,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9124004346981231718, guid: a454cc821da5e1b419971d0230763865, type: 3}
+      propertyPath: _questClips.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: ea726815d10f00d41aa1252f88248303, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a454cc821da5e1b419971d0230763865, type: 3}
