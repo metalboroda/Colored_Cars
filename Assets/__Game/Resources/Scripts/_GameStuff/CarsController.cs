@@ -52,7 +52,8 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
           if (_correctClicksCounter >= _correctAmount) {
             _correctClicksCounter = _correctAmount;
 
-            _gameBootstrapper.StateMachine.ChangeStateWithDelay(new GameWinState(_gameBootstrapper), 1f, this);
+            if (_gameBootstrapper != null)
+              _gameBootstrapper.StateMachine.ChangeStateWithDelay(new GameWinState(_gameBootstrapper), 1f, this);
           }
 
           EventBus<ScoreEvent>.Raise(new ScoreEvent {
@@ -67,7 +68,8 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
         ID = carClickedEvent.CarHandler.transform.GetInstanceID()
       });
 
-      _gameBootstrapper.StateMachine.ChangeStateWithDelay(new GameLoseState(_gameBootstrapper), 1f, this);
+      if (_gameBootstrapper != null)
+        _gameBootstrapper.StateMachine.ChangeStateWithDelay(new GameLoseState(_gameBootstrapper), 1f, this);
     }
   }
 }

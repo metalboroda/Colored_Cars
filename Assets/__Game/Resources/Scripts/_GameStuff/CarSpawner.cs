@@ -21,16 +21,19 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
     [Header("Tutorial")]
     [SerializeField] private bool _tutorial;
 
-    private List<CarHandler> _spawnedCars = new List<CarHandler>();
+    private List<GameObject> _spawnedCars = new List<GameObject>();
 
     private EventBinding<CarCompletedTheMove> _carCompletedTheMove;
+    private EventBinding<CarClickedEvent> _carClickedEvent;
 
     private void OnEnable() {
       _carCompletedTheMove = new EventBinding<CarCompletedTheMove>(OnCarCompletedTheMove);
+      _carClickedEvent = new EventBinding<CarClickedEvent>(OnCarClicked);
     }
 
     private void OnDisable() {
       _carCompletedTheMove.Remove(OnCarCompletedTheMove);
+      _carClickedEvent.Remove(OnCarClicked);
     }
 
     private void Start() {
@@ -38,14 +41,18 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
     }
 
     private void OnCarCompletedTheMove(CarCompletedTheMove carCompletedTheMove) {
-      _spawnedCars.Remove(carCompletedTheMove.CarHandler);
+      _spawnedCars.Remove(carCompletedTheMove.CarHandler.gameObject);
+    }
+
+    private void OnCarClicked(CarClickedEvent carClickedEvent) {
+      UpdateCarAmount(carClickedEvent.CarHandler.CarValue);
     }
 
     private IEnumerator SpawnCars() {
       while (true) {
         foreach (var carSpawnItem in _carSpawnItems) {
           for (int i = 0; i < carSpawnItem.Amount; i++) {
-            if (_spawnedCars.Contains(carSpawnItem.CarPrefab.GetComponent<CarHandler>())) {
+            if (_spawnedCars.Contains(carSpawnItem.CarPrefab)) {
               yield return new WaitForSeconds(Random.Range(_spawnRateMin, _spawnRateMax));
               continue;
             }
@@ -59,14 +66,23 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
     }
 
     private void SpawnCar(CarSpawnItem carSpawnItem) {
-      GameObject carObject = Instantiate(carSpawnItem.CarPrefab, _spawnPoint.position, Quaternion.identity);
+      GameObject carObject = Instantiate(carSpawnItem.CarPrefab, _spawnPoint.position, Quaternion.identity, transform);
       CarHandler carHandler = carObject.GetComponent<CarHandler>();
       CarMovementHandler carMovementHandler = carObject.GetComponent<CarMovementHandler>();
 
       carHandler.InitCar(carSpawnItem.CarValue, carSpawnItem.WordClip, _tutorial);
       carMovementHandler.InitMovement(_movementSpeed, _spawnPoint.position, _movementPoint);
 
-      _spawnedCars.Add(carHandler);
+      _spawnedCars.Add(carObject);
+    }
+
+    private void UpdateCarAmount(string carValue) {
+      foreach (var carSpawnItem in _carSpawnItems) {
+        if (carSpawnItem.CarValue == carValue) {
+          carSpawnItem.Amount--;
+          break;
+        }
+      }
     }
   }
 }
